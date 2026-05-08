@@ -1,14 +1,25 @@
 import postgres from 'postgres'
 
-const connectionString = process.env.DATABASE_URL!
+// Cache connection across serverless invocations (module-level singleton)
+declare global {
+  // eslint-disable-next-line no-var
+  var _pgClient: ReturnType<typeof postgres> | undefined
+}
 
-const sql = postgres(connectionString, {
-  ssl: { rejectUnauthorized: false },
-  max: 1,
-  idle_timeout: 10,
-  connect_timeout: 10,
-  prepare: false,
-  onnotice: () => {},
-})
+function getClient() {
+  if (!global._pgClient) {
+    global._pgClient = postgres(process.env.DATABASE_URL!, {
+      ssl: { rejectUnauthorized: false },
+      max: 3,
+      idle_timeout: 20,
+      connect_timeout: 15,
+      prepare: false,
+      onnotice: () => {},
+    })
+  }
+  return global._pgClient
+}
+
+const sql = getClient()
 
 export default sql
