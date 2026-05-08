@@ -8,7 +8,7 @@ const SECRET = new TextEncoder().encode(
 const COOKIE_NAME = 'ai-cms-session'
 const SESSION_DURATION = 15 * 60
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Get token from cookie
