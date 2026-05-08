@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import sql from '@/lib/db'
 import { hashPassword } from '@/lib/auth'
-import { createSession, setSessionCookie } from '@/lib/session'
+import { createSession, setSessionOnResponse } from '@/lib/session'
 import { SessionUser } from '@/types'
 
 const registerSchema = z.object({
@@ -51,9 +51,8 @@ export async function POST(request: NextRequest) {
     }
 
     const token = await createSession(sessionUser)
-    await setSessionCookie(token)
-
-    return NextResponse.json({ user: sessionUser }, { status: 201 })
+    const response = NextResponse.json({ user: sessionUser }, { status: 201 })
+    return setSessionOnResponse(response, token)
   } catch (error) {
     console.error('Register error:', error)
     return NextResponse.json({ error: 'Registration failed' }, { status: 500 })
