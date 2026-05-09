@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import {
   Bell,
@@ -12,8 +11,6 @@ import {
   X,
   LayoutDashboard,
   FileText,
-  ShieldCheck,
-  Users,
   Bot,
   ClipboardList,
 } from 'lucide-react'
@@ -98,22 +95,32 @@ export function Navbar({ user }: NavbarProps) {
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
 
+  const initials = user?.full_name?.charAt(0)?.toUpperCase() ?? 'A'
+
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <nav
+      className="sticky top-0 z-50 border-b shadow-sm"
+      style={{ backgroundColor: '#ffffff', borderColor: '#c3c6d1', fontFamily: 'Inter, sans-serif' }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <Link href={user ? (user.role === 'admin' ? '/admin/dashboard' : user.role === 'staff' ? '/staff/dashboard' : '/dashboard') : '/'} className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <ShieldCheck className="w-5 h-5 text-white" />
-              </div>
-              <div className="hidden sm:block">
-                <div className="text-sm font-bold text-gray-900 leading-tight">AI-CMS</div>
-                <div className="text-[10px] text-gray-500 leading-tight">PUCIT Portal</div>
-              </div>
-            </Link>
-          </div>
+          <Link
+            href={user ? (user.role === 'admin' ? '/admin/dashboard' : user.role === 'staff' ? '/staff/dashboard' : '/dashboard') : '/'}
+            className="flex items-center gap-2"
+          >
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
+              style={{ backgroundColor: '#003366', color: '#ffffff' }}
+            >
+              P
+            </div>
+            <div className="hidden sm:block">
+              <div className="text-sm font-bold leading-tight" style={{ color: '#001e40' }}>AI-CMS PUCIT</div>
+              <div className="text-[10px] leading-tight" style={{ color: '#43474f' }}>Complaint Management System</div>
+            </div>
+          </Link>
 
           {/* Desktop Nav Links */}
           {user && (
@@ -122,11 +129,12 @@ export function Navbar({ user }: NavbarProps) {
                 <Link
                   key={href}
                   href={href}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  style={
                     isActive(href)
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                  }`}
+                      ? { backgroundColor: '#efedee', color: '#001e40', fontWeight: 600 }
+                      : { color: '#43474f' }
+                  }
                 >
                   <Icon className="w-4 h-4" />
                   {label}
@@ -140,14 +148,26 @@ export function Navbar({ user }: NavbarProps) {
             {/* Public links when not logged in */}
             {!user && (
               <div className="hidden sm:flex items-center gap-2">
-                <Link href="/submit">
-                  <Button size="sm" variant="ghost">Submit Complaint</Button>
+                <Link
+                  href="/submit"
+                  className="text-sm px-3 py-1.5 rounded transition-colors hover:bg-gray-50"
+                  style={{ color: '#43474f' }}
+                >
+                  Submit Complaint
                 </Link>
-                <Link href="/track">
-                  <Button size="sm" variant="ghost">Track</Button>
+                <Link
+                  href="/track"
+                  className="text-sm px-3 py-1.5 rounded transition-colors hover:bg-gray-50"
+                  style={{ color: '#43474f' }}
+                >
+                  Track
                 </Link>
-                <Link href="/login">
-                  <Button size="sm">Login</Button>
+                <Link
+                  href="/login"
+                  className="text-sm px-4 py-1.5 rounded-lg font-medium transition-colors"
+                  style={{ backgroundColor: '#003366', color: '#ffffff' }}
+                >
+                  Login
                 </Link>
               </div>
             )}
@@ -158,11 +178,14 @@ export function Navbar({ user }: NavbarProps) {
                 <div className="relative">
                   <button
                     onClick={() => { setNotifOpen(!notifOpen); if (!notifOpen) fetchNotifications() }}
-                    className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="relative p-2 rounded-lg transition-colors hover:bg-gray-50"
                   >
-                    <Bell className="w-5 h-5 text-gray-600" />
+                    <Bell className="w-5 h-5" style={{ color: '#43474f' }} />
                     {unreadCount > 0 && (
-                      <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold">
+                      <span
+                        className="absolute top-1 right-1 w-4 h-4 text-white text-[10px] rounded-full flex items-center justify-center font-bold"
+                        style={{ backgroundColor: '#ba1a1a' }}
+                      >
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
@@ -170,29 +193,50 @@ export function Navbar({ user }: NavbarProps) {
 
                   {/* Notification dropdown */}
                   {notifOpen && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50">
-                      <div className="flex items-center justify-between px-4 py-3 border-b bg-gray-50">
-                        <span className="text-sm font-semibold text-gray-900">Notifications</span>
+                    <div
+                      className="absolute right-0 mt-2 w-80 rounded-xl shadow-lg border overflow-hidden z-50"
+                      style={{ backgroundColor: '#ffffff', borderColor: '#c3c6d1' }}
+                    >
+                      <div
+                        className="flex items-center justify-between px-4 py-3 border-b"
+                        style={{ backgroundColor: '#efedee', borderColor: '#c3c6d1' }}
+                      >
+                        <span className="text-sm font-semibold" style={{ color: '#1b1c1d' }}>Notifications</span>
                         {unreadCount > 0 && (
-                          <button onClick={markAllRead} className="text-xs text-blue-600 hover:underline">
+                          <button
+                            onClick={markAllRead}
+                            className="text-xs hover:underline"
+                            style={{ color: '#003366' }}
+                          >
                             Mark all read
                           </button>
                         )}
                       </div>
                       <div className="max-h-64 overflow-y-auto">
                         {notifications.length === 0 ? (
-                          <div className="px-4 py-6 text-center text-sm text-gray-500">No notifications</div>
+                          <div className="px-4 py-6 text-center text-sm" style={{ color: '#43474f' }}>
+                            No notifications
+                          </div>
                         ) : (
                           notifications.slice(0, 8).map((n) => (
                             <div
                               key={n.id}
-                              className={`px-4 py-3 border-b last:border-0 hover:bg-gray-50 cursor-pointer ${!n.is_read ? 'bg-blue-50' : ''}`}
+                              className="px-4 py-3 border-b last:border-0 cursor-pointer"
+                              style={{
+                                borderColor: '#c3c6d1',
+                                backgroundColor: !n.is_read ? '#f0f5ff' : '#ffffff',
+                              }}
                             >
                               <div className="flex items-start gap-2">
-                                {!n.is_read && <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0" />}
+                                {!n.is_read && (
+                                  <div
+                                    className="w-2 h-2 rounded-full mt-1.5 shrink-0"
+                                    style={{ backgroundColor: '#003366' }}
+                                  />
+                                )}
                                 <div className={!n.is_read ? '' : 'ml-4'}>
-                                  <p className="text-sm font-medium text-gray-900">{n.title}</p>
-                                  <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{n.message}</p>
+                                  <p className="text-sm font-medium" style={{ color: '#1b1c1d' }}>{n.title}</p>
+                                  <p className="text-xs mt-0.5 line-clamp-2" style={{ color: '#43474f' }}>{n.message}</p>
                                 </div>
                               </div>
                             </div>
@@ -203,28 +247,41 @@ export function Navbar({ user }: NavbarProps) {
                   )}
                 </div>
 
-                {/* User info */}
-                <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100">
-                  <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-                    {user.full_name.charAt(0).toUpperCase()}
+                {/* User avatar + name */}
+                <div
+                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg"
+                  style={{ backgroundColor: '#efedee' }}
+                >
+                  <div
+                    className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                    style={{ backgroundColor: '#003366' }}
+                  >
+                    {initials}
                   </div>
                   <div>
-                    <div className="text-xs font-medium text-gray-900 max-w-[120px] truncate">{user.full_name}</div>
-                    <div className="text-[10px] text-gray-500 capitalize">{user.role}</div>
+                    <div className="text-xs font-medium max-w-[120px] truncate" style={{ color: '#1b1c1d' }}>
+                      {user.full_name}
+                    </div>
+                    <div className="text-[10px] capitalize" style={{ color: '#43474f' }}>{user.role}</div>
                   </div>
                 </div>
 
-                <Button size="sm" variant="ghost" onClick={handleLogout} className="hidden md:flex items-center gap-1">
+                <button
+                  onClick={handleLogout}
+                  className="hidden md:flex items-center gap-1 px-2 py-2 rounded-lg text-sm transition-colors hover:bg-gray-50"
+                  style={{ color: '#43474f' }}
+                >
                   <LogOut className="w-4 h-4" />
                   <span className="hidden lg:block">Logout</span>
-                </Button>
+                </button>
               </>
             )}
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+              className="md:hidden p-2 rounded-lg hover:bg-gray-50"
               onClick={() => setMobileOpen(!mobileOpen)}
+              style={{ color: '#43474f' }}
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -234,7 +291,7 @@ export function Navbar({ user }: NavbarProps) {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t bg-white">
+        <div className="md:hidden border-t" style={{ backgroundColor: '#ffffff', borderColor: '#c3c6d1' }}>
           <div className="px-4 py-3 space-y-1">
             {user ? (
               <>
@@ -243,21 +300,25 @@ export function Navbar({ user }: NavbarProps) {
                     key={href}
                     href={href}
                     onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium ${
-                      isActive(href) ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100'
-                    }`}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium"
+                    style={
+                      isActive(href)
+                        ? { backgroundColor: '#efedee', color: '#001e40' }
+                        : { color: '#43474f' }
+                    }
                   >
                     <Icon className="w-4 h-4" />
                     {label}
                   </Link>
                 ))}
-                <div className="pt-2 border-t">
-                  <div className="px-3 py-2 text-sm text-gray-500">
+                <div className="pt-2 border-t" style={{ borderColor: '#c3c6d1' }}>
+                  <div className="px-3 py-2 text-sm" style={{ color: '#43474f' }}>
                     {user.full_name} · <span className="capitalize">{user.role}</span>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 w-full"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium w-full"
+                    style={{ color: '#ba1a1a' }}
                   >
                     <LogOut className="w-4 h-4" />
                     Logout
@@ -266,9 +327,30 @@ export function Navbar({ user }: NavbarProps) {
               </>
             ) : (
               <>
-                <Link href="/submit" onClick={() => setMobileOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">Submit Complaint</Link>
-                <Link href="/track" onClick={() => setMobileOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">Track Complaint</Link>
-                <Link href="/login" onClick={() => setMobileOpen(false)} className="block px-3 py-2.5 rounded-lg text-sm font-medium text-blue-600 hover:bg-blue-50">Login</Link>
+                <Link
+                  href="/submit"
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-3 py-2.5 rounded-lg text-sm font-medium"
+                  style={{ color: '#43474f' }}
+                >
+                  Submit Complaint
+                </Link>
+                <Link
+                  href="/track"
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-3 py-2.5 rounded-lg text-sm font-medium"
+                  style={{ color: '#43474f' }}
+                >
+                  Track Complaint
+                </Link>
+                <Link
+                  href="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-3 py-2.5 rounded-lg text-sm font-medium"
+                  style={{ color: '#003366' }}
+                >
+                  Login
+                </Link>
               </>
             )}
           </div>

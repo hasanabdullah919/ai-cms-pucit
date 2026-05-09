@@ -6,9 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { ShieldCheck, Loader2, Eye, EyeOff } from 'lucide-react'
+import { Loader2, Eye, EyeOff } from 'lucide-react'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -62,18 +61,29 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{ backgroundColor: '#fbf9fa', fontFamily: 'Inter, sans-serif', color: '#1b1c1d' }}
+    >
       {/* Navbar */}
-      <nav className="bg-white border-b shadow-sm">
+      <nav
+        className="border-b"
+        style={{ backgroundColor: '#ffffff', borderColor: '#c3c6d1' }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-gray-900">AI-CMS PUCIT</span>
+          <Link
+            href="/"
+            className="text-lg font-bold tracking-tight"
+            style={{ color: '#001e40' }}
+          >
+            AI-CMS PUCIT
           </Link>
-          <Link href="/submit">
-            <Button variant="ghost" size="sm">Submit Complaint</Button>
+          <Link
+            href="/submit"
+            className="text-sm transition-colors hover:bg-gray-50 px-3 py-1.5 rounded"
+            style={{ color: '#43474f' }}
+          >
+            Submit Complaint
           </Link>
         </div>
       </nav>
@@ -82,60 +92,102 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <ShieldCheck className="w-8 h-8 text-blue-600" />
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-lg font-bold"
+              style={{ backgroundColor: '#003366', color: '#ffffff' }}
+            >
+              P
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-            <p className="text-gray-600 mt-1">Sign in to your AI-CMS account</p>
+            <h1 className="text-2xl font-bold" style={{ color: '#001e40' }}>AI-CMS PUCIT</h1>
+            <p className="mt-1 text-sm" style={{ color: '#43474f' }}>Sign in to your account</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+          {/* Card */}
+          <div
+            className="rounded-xl shadow-sm border p-8"
+            style={{ backgroundColor: '#ffffff', borderColor: '#c3c6d1' }}
+          >
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1b1c1d' }}>
+                  Email Address
+                </label>
                 <input
                   type="email"
                   {...register('email')}
-                  placeholder="you@example.com"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="you@pucit.edu.pk"
+                  className="w-full rounded-lg px-3 py-2.5 text-sm focus:outline-none transition-all"
+                  style={{
+                    border: `1px solid #c3c6d1`,
+                    backgroundColor: '#ffffff',
+                    color: '#1b1c1d',
+                  }}
+                  onFocus={e => {
+                    e.target.style.borderColor = '#003366'
+                    e.target.style.boxShadow = '0 0 0 2px rgba(0,51,102,0.15)'
+                  }}
+                  onBlur={e => {
+                    e.target.style.borderColor = '#c3c6d1'
+                    e.target.style.boxShadow = 'none'
+                  }}
                 />
-                {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+                {errors.email && <p className="text-xs mt-1" style={{ color: '#ba1a1a' }}>{errors.email.message}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+                <label className="block text-sm font-medium mb-1.5" style={{ color: '#1b1c1d' }}>
+                  Password
+                </label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
                     {...register('password')}
                     placeholder="••••••••"
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full rounded-lg px-3 py-2.5 pr-10 text-sm focus:outline-none transition-all"
+                    style={{
+                      border: `1px solid #c3c6d1`,
+                      backgroundColor: '#ffffff',
+                      color: '#1b1c1d',
+                    }}
+                    onFocus={e => {
+                      e.target.style.borderColor = '#003366'
+                      e.target.style.boxShadow = '0 0 0 2px rgba(0,51,102,0.15)'
+                    }}
+                    onBlur={e => {
+                      e.target.style.borderColor = '#c3c6d1'
+                      e.target.style.boxShadow = 'none'
+                    }}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
+                    style={{ color: '#43474f' }}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>}
+                {errors.password && <p className="text-xs mt-1" style={{ color: '#ba1a1a' }}>{errors.password.message}</p>}
               </div>
 
-              <Button
+              <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-semibold gap-2"
+                className="w-full h-11 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-opacity disabled:opacity-70"
+                style={{ backgroundColor: '#003366', color: '#ffffff' }}
               >
                 {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                 Sign In
-              </Button>
+              </button>
             </form>
 
             {/* Demo credentials */}
-            <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
-              <p className="text-xs font-semibold text-gray-600 mb-2">Demo Credentials:</p>
-              <div className="space-y-1 text-xs text-gray-500">
+            <div
+              className="mt-6 p-4 rounded-lg border"
+              style={{ backgroundColor: '#efedee', borderColor: '#c3c6d1' }}
+            >
+              <p className="text-xs font-semibold mb-2" style={{ color: '#43474f' }}>Demo Credentials:</p>
+              <div className="space-y-1 text-xs" style={{ color: '#43474f' }}>
                 <p><span className="font-medium">Admin:</span> admin@ai-cms.pucit.edu.pk / Admin@123</p>
                 <p><span className="font-medium">Staff:</span> staff.academic@ai-cms.pucit.edu.pk / Staff@123</p>
                 <p><span className="font-medium">Student:</span> student@example.com / student123</p>
@@ -143,15 +195,15 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <p className="text-center text-sm text-gray-600 mt-6">
+          <p className="text-center text-sm mt-6" style={{ color: '#43474f' }}>
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="text-blue-600 font-semibold hover:underline">
+            <Link href="/register" className="font-semibold hover:underline" style={{ color: '#003366' }}>
               Register here
             </Link>
           </p>
-          <p className="text-center text-sm text-gray-500 mt-2">
+          <p className="text-center text-sm mt-2" style={{ color: '#43474f' }}>
             Or{' '}
-            <Link href="/submit" className="text-blue-600 hover:underline">
+            <Link href="/submit" className="hover:underline" style={{ color: '#003366' }}>
               submit without an account
             </Link>
           </p>

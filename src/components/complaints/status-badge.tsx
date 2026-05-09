@@ -7,12 +7,30 @@ interface StatusBadgeProps {
 }
 
 const STATUS_CONFIG: Record<ComplaintStatus, { label: string; className: string }> = {
-  pending: { label: 'Pending', className: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
-  assigned: { label: 'Assigned', className: 'bg-blue-100 text-blue-800 border-blue-200' },
-  in_progress: { label: 'In Progress', className: 'bg-purple-100 text-purple-800 border-purple-200' },
-  resolved: { label: 'Resolved', className: 'bg-green-100 text-green-800 border-green-200' },
-  closed: { label: 'Closed', className: 'bg-gray-100 text-gray-800 border-gray-200' },
-  reopened: { label: 'Reopened', className: 'bg-orange-100 text-orange-800 border-orange-200' },
+  pending: {
+    label: 'Pending',
+    className: 'bg-[#fed255] text-[#735a00]',
+  },
+  assigned: {
+    label: 'Assigned',
+    className: 'bg-[#d4e3ff] text-[#1f477b]',
+  },
+  in_progress: {
+    label: 'In Progress',
+    className: 'bg-[#e9ddff] text-[#21005d]',
+  },
+  resolved: {
+    label: 'Resolved',
+    className: 'bg-[#c3efda] text-[#005228]',
+  },
+  closed: {
+    label: 'Closed',
+    className: 'bg-[#e3e2e3] text-[#43474f]',
+  },
+  reopened: {
+    label: 'Reopened',
+    className: 'bg-[#ffdad6] text-[#93000a]',
+  },
 }
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
@@ -20,11 +38,12 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border',
+        'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium',
         config.className,
         className
       )}
     >
+      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
       {config.label}
     </span>
   )
